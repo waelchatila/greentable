@@ -1,9 +1,6 @@
 require 'greentable/greentable_counter'
 
 module Greentable
-  #class Column
-  #  attr_accessor :attributes, :html, :tag
-  #end
 
   class Table
     def initialize(parent, records, opts)
@@ -28,13 +25,7 @@ module Greentable
       return if capture_headers
       return if opts[:display_on] == :first && !@row_counter.first?
       return if opts[:display_on] == :last && !@row_counter.last?
-      #@th_html[@col_counter] = th
-      #@td_html[@col_counter] = capture(@records[@row_counter.i], self, &block)
     end
-
-    #def current_row
-    #  @rows_attributes[@counter.rows]
-    #end
 
     def greencolumn(th = nil, opts = {}, &block)
       @th_html[@current_col] = th
