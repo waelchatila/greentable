@@ -51,13 +51,15 @@ module Greentable
     def to_s
       ret = ""
       ret << "<table#{do_attributes(@opts)}>"
-      ret << "<thead>"
-      ret << "<tr>"
-      @th_html.each do |th|
-        ret << "<th#{do_attributes(@opts_th)}>#{th}</th>"
+      unless @th_html.compact.empty?
+        ret << "<thead>"
+        ret << "<tr>"
+        @th_html.each do |th|
+          ret << "<th#{do_attributes(@opts_th)}>#{th}</th>"
+        end
+        ret << "</tr>"
+        ret << "</thead>"
       end
-      ret << "</tr>"
-      ret << "</thead>"
       ret << "<tbody>"
 
       @row_counter.i.times do |i|
