@@ -21,13 +21,13 @@ module Greentable
 
     end
 
-    def greensubrow(opts = {}, &block)
+    def subrow(opts = {}, &block)
       return if capture_headers
       return if opts[:display_on] == :first && !@row_counter.first?
       return if opts[:display_on] == :last && !@row_counter.last?
     end
 
-    def greencolumn(th = nil, opts = {}, &block)
+    def col(th = nil, opts = {}, &block)
       @th_html[@current_col] = th
 
       @td_html[@row_counter.i] ||= []
@@ -55,7 +55,7 @@ module Greentable
         ret << "<thead>"
         ret << "<tr>"
         @th_html.each do |th|
-          ret << "<th#{do_attributes(@opts_th)}>#{th}</th>"
+          ret << "<th#{do_attributes(@opts_th)}>#{th.is_a?(Proc) ? th.call.to_s : th}</th>"
         end
         ret << "</tr>"
         ret << "</thead>"
