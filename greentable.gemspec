@@ -5,6 +5,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/waelchatila/greentable"
   s.summary     = "Rails declarative html tables with export features"
   s.description = "Rails declarative html tables with export features"
+  s.license = 'LGPLv3+'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
