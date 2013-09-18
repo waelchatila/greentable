@@ -83,7 +83,7 @@ If you need column names or options to be a little more dynamic, you can use pro
 =greentable(years) do |gt,year|
   -gt.col('Year') do
     =year.to_s
-  -3.times do |week|
+  -4.times do |week|
     -gt.col(Proc.new{ week % 2 == 0 ? 'An even week' : 'An odd week' }, td: {style: Proc.new{ year % 2 == 1 ? 'background-color:red' : nil }} ) do
       =week
 ```
@@ -107,7 +107,6 @@ will produce
             <td style='background-color:red'>1</td>
             <td>2</td>
             <td style='background-color:red'>3</td>
-            ...
         </tr>
         <tr>
             <td>2014</td>
