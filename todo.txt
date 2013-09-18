@@ -5,4 +5,5 @@
     greentable_export
     greentable_id
     greentable_export_filename
+* assets/greentable.css
 

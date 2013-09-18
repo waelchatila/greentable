@@ -1,7 +1,8 @@
 Greentable
 ==========
 
-Rails declarative html tables with export (csv,xls,pdf,xml) features.
+Greentable produces HTML tables from an array without you having to deal with any HTML elements.
+Greentable is an declarative approach to HTML tables and adds additional export (csv,xls,pdf,xml) features.
 
 Please note that the export module is still under development.
 

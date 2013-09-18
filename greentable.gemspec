@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.author      = "Wael Chatila"
   s.homepage    = "https://github.com/waelchatila/greentable"
   s.summary     = "Rails declarative html tables with export features"
-  s.description = "Rails declarative html tables with export features"
+  s.description = "Greentable produces HTML tables from an array without you having to deal with any HTML elements."
   s.license = 'LGPLv3+'
 
   s.files         = `git ls-files`.split("\n")
