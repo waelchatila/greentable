@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "greentable"
-  s.version     = "0.0.5"
+  s.version     = "0.0.6"
   s.author      = "Wael Chatila"
   s.homepage    = "https://github.com/waelchatila/greentable"
   s.summary     = "Rails declarative html tables with export features"
