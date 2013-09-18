@@ -3,12 +3,14 @@ Greentable
 
 Rails declarative html tables with export (csv,xls,pdf,xml) features.
 
-Please note that export module is still under development.
+Please note that the export module is still under development.
 
-Tested on rails 3.2 only using ruby 1.9.3
+Tested on rails 3.2, using ruby 1.9.3
 
 ## Installation
+```ruby
 gem 'greentable'
+```
 
 ## Usage
 The Greentable gem provides two methods only. To produce a table from an array of elements, do the following in a view:
@@ -81,7 +83,7 @@ If you need column names or options to be a little more dynamic, you can use pro
 =greentable(years) do |gt,year|
   -gt.col('Year') do
     =year.to_s
-  -52.times do |week|
+  -3.times do |week|
     -gt.col(Proc.new{ week % 2 == 0 ? 'An even week' : 'An odd week' }, td: {style: Proc.new{ year % 2 == 1 ? 'background-color:red' : nil }} ) do
       =week
 ```
@@ -113,7 +115,6 @@ will produce
             <td style='background-color:red'>1</td>
             <td>2</td>
             <td style='background-color:red'>3</td>
-            ...
         </tr>
         ...
     </tbody>
@@ -121,18 +122,20 @@ will produce
 ```
 
 
-## Global Defaults Options
-You can configure global default for your greentables.
+## Global Defaults
+You can configure global defaults for all your greentables.
 
 In config/initializers/greentable.rb
 
 ```ruby
 Greentable.configure do |config|
-  config.defaults = {class: 'myTableClass', th: {style: 'cursor:pointer'}, td: {class: 'pi', onclick: 'alert(3.14159265359)'}}
+  config.defaults = {class: 'myTableClass', tr: {class: 'myTrClass'}, th: {style: 'cursor:pointer'}, td: {class: 'pi', onclick: 'alert(3.14159265359)'}}
 end
+```
 
-...
+and in some view:
 
+```erb
 <%= greentable([3.14]) do |gt,element| %>
     <%  gt.col('First Column') do %>
         <%= element %>
@@ -145,22 +148,23 @@ will produce
 ```html
 <table class='myTableClass'>
     <thead>
-        <tr>
+        <tr class='myTrClass'>
           <th style='cursor:pointer'>First Column</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
+        <tr class='myTrClass'>
             <td class='pi' onclick='alert(3.14159265359)'>3.14</td>
         </tr>
     </tbody>
 </table>
+```
 
 ## Green Export
 
 Greentable enables you to export your greentable data for download in various formats seamlessly by a rack middleware.
 
 
-[Still under development]
+[export still under development. more soon]
 
 
