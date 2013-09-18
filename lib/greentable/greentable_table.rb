@@ -1,3 +1,4 @@
+require 'greentable/configuration'
 require 'greentable/greentable_counter'
 
 module Greentable
@@ -6,16 +7,15 @@ module Greentable
     def initialize(parent, records, opts)
       @parent = parent
       @records = records
-      @opts_tr = opts.delete(:tr) || {}
-      @opts_td = opts.delete(:td) || {}
-      @opts_th = opts.delete(:th) || {}
-      @opts = opts
+      defaults = Greentable.configuration.defaults.clone
+      @defaults_tr = (defaults.delete(:tr) || {}).deep_merge(opts.delete(:tr) || {})
+      @defaults_th = (defaults.delete(:th) || {}).deep_merge(opts.delete(:th) || {})
+      @defaults_td = (defaults.delete(:td) || {}).deep_merge(opts.delete(:td) || {})
+      @opts = defaults.deep_merge(opts)
 
       @tr_attributes = []
-
       @th_attributes = []
       @th_html = []
-
       @td_attributes = []
       @td_html = []
 
@@ -29,10 +29,11 @@ module Greentable
 
     def col(th = nil, opts = {}, &block)
       @th_html[@current_col] = th
+      @th_attributes[@current_col] = opts.delete(:th) || {}
+      @td_attributes[@current_col] = opts
 
       @td_html[@row_counter.i] ||= []
       @td_html[@row_counter.i][@current_col] = @parent.capture(&block)
-      @td_attributes[@row_counter.i] = opts
 
       @current_col += 1
       return nil
@@ -54,8 +55,8 @@ module Greentable
       unless @th_html.compact.empty?
         ret << "<thead>"
         ret << "<tr>"
-        @th_html.each do |th|
-          ret << "<th#{do_attributes(@opts_th)}>#{th.is_a?(Proc) ? th.call.to_s : th}</th>"
+        @th_html.each_with_index do |th,i|
+          ret << "<th#{do_attributes(@th_attributes[i])}>#{th.is_a?(Proc) ? th.call.to_s : th}</th>"
         end
         ret << "</tr>"
         ret << "</thead>"
@@ -63,9 +64,9 @@ module Greentable
       ret << "<tbody>"
 
       @row_counter.i.times do |i|
-        ret << "<tr#{do_attributes(@opts_tr.merge(@tr_attributes[i]||{}))}>"
+        ret << "<tr#{do_attributes(@defaults_tr.deep_merge(@tr_attributes[i]||{}))}>"
         @td_html[i].each do |td|
-          ret << "<td#{do_attributes(@opts_td.merge(@td_attributes[i]||{}))}>#{td}</td>"
+          ret << "<td#{do_attributes(@defaults_td.deep_merge(@td_attributes[i]||{}))}>#{td}</td>"
         end
         ret << "</tr>"
       end
@@ -80,5 +81,6 @@ module Greentable
       ret = " " + ret unless ret.empty?
       return ret
     end
+
   end
 end

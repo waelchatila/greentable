@@ -1,0 +1,8 @@
+* subrows. display_on = first | last | all
+* export plugins
+* greentable options: export, media skip (?)
+* Special Query Parameters
+    greentable_export
+    greentable_id
+    greentable_export_filename
+
