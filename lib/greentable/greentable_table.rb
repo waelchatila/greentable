@@ -7,7 +7,7 @@ module Greentable
     def initialize(parent, records, opts)
       @parent = parent
       @records = records
-      defaults = Greentable.configuration.defaults.clone
+      defaults = Greentable.configuration.defaults.clone rescue {}
       @defaults_tr = (defaults.delete(:tr) || {}).deep_merge(opts.delete(:tr) || {})
       @defaults_th = (defaults.delete(:th) || {}).deep_merge(opts.delete(:th) || {})
       @defaults_td = (defaults.delete(:td) || {}).deep_merge(opts.delete(:td) || {})
