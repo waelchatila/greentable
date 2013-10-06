@@ -56,7 +56,7 @@ module Greentable
         ret << "<thead>"
         ret << "<tr>"
         @th_html.each_with_index do |th,i|
-          ret << "<th#{do_attributes(@th_attributes[i])}>#{th.is_a?(Proc) ? th.call.to_s : th}</th>"
+          ret << "<th#{do_attributes(@defaults_th.deep_merge(@th_attributes[i]||{}))}>#{th.is_a?(Proc) ? th.call.to_s : th}</th>"
         end
         ret << "</tr>"
         ret << "</thead>"
