@@ -13,7 +13,10 @@ module Greentable
       @defaults_td = (defaults.delete(:td) || {}).deep_merge(opts.delete(:td) || {})
       @opts = defaults.deep_merge(opts)
 
+      #rows
       @tr_attributes = []
+
+      #cols
       @th_attributes = []
       @th_html = []
       @td_attributes = []
@@ -51,22 +54,22 @@ module Greentable
 
     def to_s
       ret = ""
-      ret << "<table#{do_attributes(@opts)}>"
+      ret << "<table#{do_attributes(nil,@opts)}>"
       unless @th_html.compact.empty?
         ret << "<thead>"
         ret << "<tr>"
-        @th_html.each_with_index do |th,i|
-          ret << "<th#{do_attributes(@defaults_th.deep_merge(@th_attributes[i]||{}))}>#{th.is_a?(Proc) ? th.call.to_s : th}</th>"
+        @th_html.each_with_index do |th,col|
+          ret << "<th#{do_attributes(nil,@th_attributes[col])}>#{th.is_a?(Proc) ? th.call.to_s : th}</th>"
         end
         ret << "</tr>"
         ret << "</thead>"
       end
       ret << "<tbody>"
 
-      @row_counter.i.times do |i|
-        ret << "<tr#{do_attributes(@defaults_tr.deep_merge(@tr_attributes[i]||{}))}>"
-        @td_html[i].each do |td|
-          ret << "<td#{do_attributes(@defaults_td.deep_merge(@td_attributes[i]||{}))}>#{td}</td>"
+      @row_counter.i.times do |row|
+        ret << "<tr#{do_attributes(row,@defaults_tr.deep_merge(@tr_attributes[row]||{}))}>"
+        @td_html[row].each_with_index do |td,col|
+          ret << "<td#{do_attributes(row,@defaults_td.deep_merge(@td_attributes[col]||{}))}>#{td}</td>"
         end
         ret << "</tr>"
       end
@@ -75,9 +78,10 @@ module Greentable
     end
 
     private
-    def do_attributes(o)
+    def do_attributes(i,o)
+      instance = i.nil? ? nil : @records[i]
       return "" if o.nil? || o.empty?
-      ret = o.map{|k,v| "#{k.is_a?(Proc) ? k.call.to_s : k.to_s}=\"#{v.is_a?(Proc) ? v.call.to_s : v.to_s}\""}.join(" ").strip
+      ret = o.map{|k,v| "#{k.is_a?(Proc) ? instance.instance_eval(&k).to_s : k.to_s}=\"#{v.is_a?(Proc) ? instance.instance_eval(&v).to_s : v.to_s}\""}.join(" ").strip
       ret = " " + ret unless ret.empty?
       return ret
     end
