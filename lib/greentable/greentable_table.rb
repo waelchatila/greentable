@@ -54,6 +54,7 @@ module Greentable
 
     def to_s
       ret = ""
+      return ret if @td_html.empty?
       ret << "<table#{do_attributes(nil,@opts)}>"
       unless @th_html.compact.empty?
         ret << "<thead>"
