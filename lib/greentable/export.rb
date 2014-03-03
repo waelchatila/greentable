@@ -16,16 +16,18 @@ module Greentable
         request    = Rack::Request.new(env)
         greentable_id = request.params['greentable_id']
         if greentable_id
-          format = $1
+
+          media = $1
           body = @response.respond_to?(:body) ? @response.body : @response.join
-          doc = Hpricot(body.to_s)
+          doc = Nokogiri(body.to_s)
           @ret= ""
           (doc/"##{greentable_id}//tr").each do |tr|
             row = []
             col = 0
-            (tr/"/th | /td").each do |x|
-              colspan = [(x.attributes['colspan'] || 1).to_i, 1].max
-              row[col] = x.to_plain_text
+            (tr/"./th | ./td").each do |x|
+              colspan = (x.attributes['colspan'] || 1).to_i
+              colspan = [colspan,1].max
+              row[col] = (x.inner_text || '').strip
               col += colspan
             end
             CSV.generate_row(row, row.length, @ret)
@@ -35,7 +37,7 @@ module Greentable
 
           @headers["Content-Length"] = @ret.length.to_s
           @headers["Content-Type"] = "text/csv"
-          @headers["Content-Disposition"] = "attachment; filename=#{filename}.#{format}"
+          @headers["Content-Disposition"] = "attachment; filename=#{filename}.#{media}"
           @headers.delete('ETag')
           @headers.delete('Cache-Control')
         end
