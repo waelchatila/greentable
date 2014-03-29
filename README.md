@@ -1,14 +1,8 @@
 [![Build Status](https://travis-ci.org/waelchatila/greentable.svg?branch=master)](https://travis-ci.org/waelchatila/greentable)
-
 Greentable
 ==========
-
 Greentable produces HTML tables from an array without you having to deal with any HTML elements.
-Greentable is an declarative approach to HTML tables and adds additional export (csv,xls,pdf,xml) features.
-
-Please note that the export module is still under development.
-
-Tested on rails 3.2, using ruby 1.9.3
+Greentable is an declarative approach to HTML tables and adds additional export features.
 
 ## Installation
 ```ruby
