@@ -1,0 +1,11 @@
+hej
+
+<%= greentable([0]) do |gt, el| %>
+
+    <% gt.col('i') do %>
+        <%= el %>
+    <% end %>
+    <% gt.col('i+1') do %>
+        <%= el + 1 %>
+    <% end %>
+<% end %>
