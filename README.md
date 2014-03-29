@@ -213,16 +213,16 @@ Add a couple of http query parameters in your view and your done:
 
 ### Available Query Parameters
 
-* **greentable_id**=*any string* [REQUIRED]. A unique html tag id for the rack middleware to parse the response and extract the table with.
+* **greentable_id**=*any string* [REQUIRED]. A unique html tag id to tell the rack middleware which greentable to extract.
 * **greentable_export**=**csv** | **print** [REQUIRED].
   **csv** will produce a CSV file. Headers will be the table headers. Colspans are honored (row spans are not).
   **print** will extract the green table by id and insert a javascript snippet to print the doc
   ```javascript
     window.onload = function() { window.focus(); window.print(); }
   ```
-  Any css styling done in within the html *head* will remain. Anything within the *body* will be replaced with the greentable content.
-* **greentable_export_filename**=*any string* [OPTIONAL]. *default: 'export'*
-  Specify the filename in the *Content-Disposition* header. Only used if *greentable_export=csv*
+  Any css styling done within the html *HEAD* will remain. Anything within the *BODY* will be replaced with the greentable content.
+* **greentable_export_filename**=*any string* [OPTIONAL]. *default: 'export.csv'*.
+  Specifies the filename in the *Content-Disposition* header. Only used if *greentable_export=csv*
 
 
 
