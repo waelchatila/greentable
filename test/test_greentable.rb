@@ -1,5 +1,7 @@
 require 'test/unit'
 require 'greentable'
+require 'coveralls'
+Coveralls.wear!
 
 class String
   def html_safe
