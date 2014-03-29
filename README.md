@@ -14,7 +14,7 @@ gem 'greentable'
 ```
 
 ## Usage
-The Greentable gem provides two methods only. To produce a table from an array of elements, do the following in a view:
+To produce a table from an array of elements, do the following in a view:
 
 ```haml
 =greentable(users) do |gt,user|
@@ -47,38 +47,67 @@ which will produce the following html:
 </table>
 ```
 
-## Optional Options
+## Options
 
 Both greentable and greentable.col may be called with an optional hash
 
 ```haml
-=greentable(array, class: 'a', style: 'b:c', tr: {class: 'd'}, th: {onclick: 'e();'}, td: {'data-target' => 'f'} ) do |gt, el|
-  -gt.col('Col 1', class: 'g', th: {class: 'h'}) do
-    = el.col1
-  -gt.col('Col 2') do
-    = el.col2
+=greentable(array, class: 'table_class') do |gt, el|
+  -gt.col('col0', th: {class: 'th_class'}) do
+    =el.col0
+  -gt.col('col1', td: {class: 'td_class'}) do
+    =el.col1
 ```
 
 will produce
 
 ```html
-<table class='a' style='b:c'>
+<table class="table_class"">
     <thead>
-        <tr class='d'>
-          <th class='h' onclick='e();'>Col 1</th>
-          <th onclick='e();'>Col 2</th>
+        <tr>
+            <th class="th_class">col0</th>
+            <th>col1</th>
         </tr>
     </thead>
     <tbody>
-        <tr class='d'>
-            <td class='g' data-target='f'>...</td>
-            <td data-target='f'>...</td>
+        <tr>
+            <td>...</td>
+            <td class="td_class">...</td>
         </tr>
     </tbody>
 </table>
 ```
 
-If you need column names or options to be a little more dynamic, you can use procs:
+A comprehensive example:
+
+```haml
+=greentable(array, class: 'a aa', style: 'b:c', tr: {class: 'd'}, th: {onclick: 'e();'}, td: {class: 'f', 'data-target' => 'g'} ) do |gt, el|
+  -gt.col('col0', class: 'h', th: {class: 'i'}) do
+    =el.col0
+  -gt.col('col1', td: {class: 'j'}) do
+    =el.col1
+```
+
+will produce
+
+```html
+<table class="a aa" style="b:c">
+    <thead>
+        <tr class="d">
+            <th onclick="e();" class="h i ee">col0</th>
+            <th onclick="e();" class="ee">col1</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="d">
+            <td data-target="f" class="h ff">0</td>
+            <td data-target="f" class="j ff">0</td>
+        </tr>
+    </tbody>
+</table>
+```
+
+If you need column names or options to be dynamic, you can use procs:
 
 ```haml
 =greentable(years) do |gt,year|

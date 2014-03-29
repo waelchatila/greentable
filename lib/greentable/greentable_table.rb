@@ -7,11 +7,11 @@ module Greentable
     def initialize(parent, records, opts)
       @parent = parent
       @records = records
-      defaults = Greentable.configuration.defaults.clone rescue {}
-      @defaults_tr = (defaults.delete(:tr) || {}).deep_merge(opts.delete(:tr) || {})
-      @defaults_th = (defaults.delete(:th) || {}).deep_merge(opts.delete(:th) || {})
-      @defaults_td = (defaults.delete(:td) || {}).deep_merge(opts.delete(:td) || {})
-      @opts = defaults.deep_merge(opts)
+      defaults = Greentable.configuration.defaults.dup rescue {}
+      @defaults_tr = deep_merge(defaults.delete(:tr), opts.delete(:tr))
+      @defaults_th = deep_merge(defaults.delete(:th), opts.delete(:th))
+      @defaults_td = deep_merge(defaults.delete(:td), opts.delete(:td))
+      @opts = deep_merge(defaults, opts)
 
       #rows
       @tr_attributes = []
@@ -32,8 +32,10 @@ module Greentable
 
     def col(th = nil, opts = {}, &block)
       @th_html[@current_col] = th
-      @th_attributes[@current_col] = opts.delete(:th) || {}
-      @td_attributes[@current_col] = opts
+      th_opts = opts.delete(:th) || {}
+      td_opts = opts.delete(:td) || {}
+      @th_attributes[@current_col] = deep_merge(th_opts, opts)
+      @td_attributes[@current_col] = deep_merge(td_opts, opts)
 
       @td_html[@row_counter.i] ||= []
       @td_html[@row_counter.i][@current_col] = @parent.capture(&block)
@@ -50,6 +52,8 @@ module Greentable
         block.call(self, record)
         @row_counter.inc
       end
+
+      self
     end
 
     def to_s
@@ -58,9 +62,9 @@ module Greentable
       ret << "<table#{do_attributes(nil,@opts)}>"
       unless @th_html.compact.empty?
         ret << "<thead>"
-        ret << "<tr>"
+        ret << "<tr#{do_attributes(nil, @defaults_tr)}>"
         @th_html.each_with_index do |th,col|
-          ret << "<th#{do_attributes(nil,@th_attributes[col])}>#{th.is_a?(Proc) ? th.call.to_s : th}</th>"
+          ret << "<th#{do_attributes(nil, deep_merge(@defaults_th, @th_attributes[col]))}>#{th.is_a?(Proc) ? th.call.to_s : th}</th>"
         end
         ret << "</tr>"
         ret << "</thead>"
@@ -68,14 +72,15 @@ module Greentable
       ret << "<tbody>"
 
       @row_counter.i.times do |row|
-        ret << "<tr#{do_attributes(row,@defaults_tr.deep_merge(@tr_attributes[row]||{}))}>"
+        ret << "<tr#{do_attributes(row, deep_merge(@defaults_tr, @tr_attributes[row]))}>"
         @td_html[row].each_with_index do |td,col|
-          ret << "<td#{do_attributes(row,@defaults_td.deep_merge(@td_attributes[col]||{}))}>#{td}</td>"
+          ret << "<td#{do_attributes(row, deep_merge(@defaults_td, @td_attributes[col]))}>#{td}</td>"
         end
         ret << "</tr>"
       end
       ret << "</tbody>"
       ret << "</table>"
+      ret.html_safe
     end
 
     private
@@ -85,6 +90,30 @@ module Greentable
       ret = o.map{|k,v| "#{k.is_a?(Proc) ? instance.instance_eval(&k).to_s : k.to_s}=\"#{v.is_a?(Proc) ? instance.instance_eval(&v).to_s : v.to_s}\""}.join(" ").strip
       ret = " " + ret unless ret.empty?
       return ret
+    end
+
+    def deep_merge(source_hash, specialized_hash)
+      deep_merge!((source_hash||{}).dup, (specialized_hash||{}).dup)
+    end
+
+    def deep_merge!(source_hash, specialized_hash)
+      #this code is originally from the gem hash-deep-merge, but has been modified slightly
+      specialized_hash.each_pair do |rkey, rval|
+        if source_hash.has_key?(rkey) then
+          lval = source_hash[rkey]
+          if rval.is_a?(Hash) and lval.is_a?(Hash) then
+            deep_merge(source_hash[rkey], rval)
+          elsif rval == source_hash[rkey] then
+          elsif rval.is_a?(String) and lval.is_a?(String)
+            source_hash[rkey] = "#{rval} #{lval}"
+          else
+            source_hash[rkey] = rval
+          end
+        else
+          source_hash[rkey] = rval
+        end
+      end
+      return source_hash
     end
 
   end
