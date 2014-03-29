@@ -1,13 +1,4 @@
-require 'test/unit'
-require 'greentable'
-require 'coveralls'
-Coveralls.wear!
-
-class String
-  def html_safe
-    self
-  end
-end
+require 'test_helper'
 
 class GreentableTest < Test::Unit::TestCase
 
@@ -96,3 +87,4 @@ class GreentableTest < Test::Unit::TestCase
   end
 
 end
+
