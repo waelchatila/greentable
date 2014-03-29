@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/waelchatila/greentable.svg?branch=master)](https://travis-ci.org/waelchatila/greentable)
+
 Greentable
 ==========
 
