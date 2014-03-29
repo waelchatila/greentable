@@ -191,11 +191,40 @@ will produce
 </table>
 ```
 
-## Green Export
+## Green Export &amp; Green Printing
 
-Greentable enables you to export your greentable data for download in various formats seamlessly by a rack middleware.
+Greentable enables you to export or print your greentable data for download in various formats seamlessly by a rack middleware.
+Add a couple of http query parameters in your view and your done:
+
+```erb
+<a href="/?greentable_export=csv&greentable_id=greentable_id">Export CSV</a>
+|
+<a href="/?greentable_export=print&greentable_id=greentable_id">Print</a>
+
+<%= greentable([0], :id => 'greentable_id') do |gt, el| %>
+    <% gt.col('i') do %>
+        <%= el %>
+    <% end %>
+    <% gt.col('i+1') do %>
+        <%= el + 1 %>
+    <% end %>
+<% end %>
+```
+
+### Available Query Parameters
+
+* **greentable_id** [REQUIRED]:= <any string>
+  A unique html tag id for the rack middleware to parse the response and extract the table with.
+* **greentable_export** [REQUIRED]:= **csv** | **print**
+  **csv** will produce a CSV file. Headers will be the table headers. Colspans are honored (row spans are not).
+  **print** will extract the green table by id and insert a javascript snippet to print the doc
+  ```javascript
+    window.onload = function() { window.focus(); window.print(); }
+  ```
+  Any css styling done in within <head>...</head> will remain. Anything within the <body> will be replaced with the greentable content
+* **greentable_export_filename** [OPTIONAL]:= <any string>. *default: 'export'*
+  Specify the filename in the *Content-Disposition* header. Only used if *greentable_export=csv*
 
 
-[export still under development. more soon]
 
 

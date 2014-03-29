@@ -19,7 +19,6 @@ module Greentable
         request    = Rack::Request.new(env)
         greentable_id = request.params['greentable_id']
         if greentable_id
-          media = $1
           body = response.respond_to?(:body) ? response.body : response.join
           doc = Nokogiri(body.to_s)
           if greentable_export == 'csv'
@@ -38,7 +37,7 @@ module Greentable
             filename = request.params['greentable_export_filename'] || "export"
             headers["Content-Length"] = ret.length.to_s
             headers["Content-Type"] = "text/csv"
-            headers["Content-Disposition"] = "attachment; filename=#{filename}.#{media}"
+            headers["Content-Disposition"] = "attachment; filename=#{filename}.#{greentable_export}"
             headers.delete('ETag')
             headers.delete('Cache-Control')
             response = [ret]
