@@ -39,10 +39,10 @@ class GreentableTest < Test::Unit::TestCase
   def test_table_opts
     gt = Greentable::Table.new(self,[0], :class => 'table_class')
     gt.process do |gt, x|
-      gt.col('col0', :th => {class: 'th_class'}) do
+      gt.col('col0', :th => {:class => 'th_class'}) do
         x
       end
-      gt.col('col1', :td => {class: 'td_class'}) do
+      gt.col('col1', :td => {:class => 'td_class'}) do
         x
       end
     end
