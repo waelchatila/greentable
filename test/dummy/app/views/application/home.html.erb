@@ -1,7 +1,11 @@
-hej
+hello world
 
-<%= greentable([0]) do |gt, el| %>
-
+<br/>
+<br/>
+<a href="/?greentable_export=csv&greentable_id=greentable_id">Export CSV</a>
+|
+<a href="/?greentable_export=print&greentable_id=greentable_id">Print</a>
+<%= greentable([0], :id => 'greentable_id') do |gt, el| %>
     <% gt.col('i') do %>
         <%= el %>
     <% end %>
@@ -9,3 +13,4 @@ hej
         <%= el + 1 %>
     <% end %>
 <% end %>
+

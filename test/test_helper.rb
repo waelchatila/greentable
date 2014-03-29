@@ -21,8 +21,8 @@ require 'greentable'
 #SimpleCov.start('rails')
 #Coveralls.wear!
 
-class String
-  def html_safe
-    self
-  end
+public
+
+def capture(&block)
+  yield
 end

@@ -1,8 +1,11 @@
 require 'test_helper'
 
 class GreentableTest < ActiveSupport::TestCase
-  def capture(&block)
-    yield
+
+  class String
+    def html_safe
+      self
+    end
   end
 
   test "empty" do

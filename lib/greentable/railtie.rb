@@ -7,8 +7,8 @@ module Greentable
       ActionView::Base.send :include, ViewHelpers
     end
 
-    #initializer "greentable.rackexport" do |app|
-    #  app.middleware.use Greentable::Export
-    #end
+    initializer "greentable.rackexport" do |app|
+      app.middleware.use Greentable::Export
+    end
   end
 end
