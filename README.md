@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/waelchatila/greentable.svg?branch=master)](https://travis-ci.org/waelchatila/greentable)
-[![Coverage Status](https://coveralls.io/repos/waelchatila/greentable/badge.png)](https://coveralls.io/r/waelchatila/greentable)
+[![Coverage Status](https://coveralls.io/repos/waelchatila/greentable/badge.png?branch=master)](https://coveralls.io/r/waelchatila/greentable?branch=master)
 Greentable
 ==========
 Greentable produces HTML tables from an array without you having to deal with any HTML elements.
