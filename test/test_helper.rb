@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start('rails')
+
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
 
@@ -16,10 +19,8 @@ Rails.backtrace_cleaner.remove_silencers!
 
 
 require 'greentable'
-#require 'simplecov'
-#require 'coveralls'
-#SimpleCov.start('rails')
-#Coveralls.wear!
+require 'coveralls'
+Coveralls.wear!
 
 public
 
