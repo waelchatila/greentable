@@ -78,6 +78,8 @@ will produce
 
 A comprehensive example:
 
+*note how gt.col(class: 'h') below is applied to both TH and TD elements*
+
 ```haml
 =greentable(array, class: 'a aa', style: 'b:c', tr: {class: 'd'}, th: {onclick: 'e();'}, td: {class: 'f', 'data-target' => 'g'} ) do |gt, el|
   -gt.col('col0', class: 'h', th: {class: 'i'}) do
@@ -149,7 +151,7 @@ will produce
 ```
 
 ## Counter Object
-Sometimes, you'll need to know what row you're currently on. For that purpose, greentable exposes a counter object:
+Sometimes, you'll need to know what row you're currently on. For that purpose Greentable exposes a counter object:
 
 ```haml
 =greentable([x,y,z]) do |gt, el|
@@ -207,14 +209,14 @@ will produce
 
 ## Greentable Footer
 
-Sometime, you'll need to display a total at the end:
+Sometime, you'll need to display a total (or whathaveyou) at the end:
 
 ```haml
 =greentable(products) do |gt, product|
-  -gt.footer(class: 'a', style: 'border-top: 2px solid black') do |footer|
+  -gt.footer(class: 'a', style: 'border-top: 2px solid black;', tr: {class: 'footer_tr_class'}) do |footer|
     -footer.col do
       Total
-    -footer.col(style: 'font-weight: bold') do
+    -footer.col(style: 'font-weight: bold;') do
       $3.14
 
   -gt.col('name') do
@@ -244,9 +246,9 @@ will produce
         </tr>
     </tbody>
     <tfoot>
-        <tr>
-            <td>Total</td>
-            <td>$3.14</td>
+        <tr class='footer_tr_class'>
+            <td class='a' style: 'border-top: 2px solid black;'>Total</td>
+            <td class='a' style='border-top: 2px solid black; font-weight: bold;'>$3.14</td>
         </tr>
     </tfoot>
 </table>

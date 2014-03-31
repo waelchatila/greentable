@@ -72,7 +72,7 @@ class GreentableTableTest < ActiveSupport::TestCase
         x
       end
     end
-    assert_equal '<table><thead><tr><th class="proc1">proc0</th></tr></thead><tbody><tr><td style="proc2" class="proc1">0</td></tr></tbody></table>', gt.to_s
+    assert_equal '<table><thead><tr><th class="proc1">proc0</th></tr></thead><tbody><tr><td class="proc1" style="proc2">0</td></tr></tbody></table>', gt.to_s
   end
 
   test "table_opts_comprehensive" do
@@ -85,7 +85,7 @@ class GreentableTableTest < ActiveSupport::TestCase
         x
       end
     end
-    assert_equal '<table class="a aa" style="b:c"><thead><tr class="d"><th onclick="e();" class="h i ee">col0</th><th onclick="e();" class="ee">col1</th></tr></thead><tbody><tr class="d"><td data-target="f" class="h ff">0</td><td data-target="f" class="j ff">0</td></tr></tbody></table>', gt.to_s
+    assert_equal '<table class="a aa" style="b:c"><thead><tr class="d"><th onclick="e();" class="ee h i">col0</th><th onclick="e();" class="ee">col1</th></tr></thead><tbody><tr class="d"><td data-target="f" class="ff h">0</td><td data-target="f" class="ff j">0</td></tr></tbody></table>', gt.to_s
   end
 
   test "global configuration" do
@@ -109,7 +109,7 @@ class GreentableTableTest < ActiveSupport::TestCase
 
   test "footer - outside process" do
     gt = Greentable::Table.new(self,[1, 2], td: {class: 'a'})
-    gt.footer(class: 'b', td: {class: 'c'}) do |footer|
+    gt.footer(class: 'b', :td => {:class => 'c'}) do |footer|
       footer.col(colspan: 2) do
         'total'
       end
@@ -131,16 +131,19 @@ class GreentableTableTest < ActiveSupport::TestCase
   test "footer - inside process" do
     gt = Greentable::Table.new(self, [0], {})
     gt.process do |gt, x|
-      gt.footer do |footer|
-        footer.col do
-          'peace out'
+      gt.footer(style: 'a', :tr => {:class => 'tr_class'}) do |footer|
+        footer.col(style: 'b') do
+          'peace'
+        end
+        footer.col(style: 'c') do
+          'out'
         end
       end
       gt.col('col0') do
         x
       end
     end
-    assert_equal "<table><thead><tr><th>col0</th></tr></thead><tbody><tr><td>0</td></tr></tbody><tfoot><tr><td class=\"\">peace out</td></tr></tfoot></table>", gt.to_s
+    assert_equal "<table><thead><tr><th>col0</th></tr></thead><tbody><tr><td>0</td></tr></tbody><tfoot><tr class=\"tr_class\"><td style=\"a b\">peace</td><td style=\"a c\">out</td></tr></tfoot></table>", gt.to_s
   end
 
   test "row_counter" do

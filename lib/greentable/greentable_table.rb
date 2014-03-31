@@ -35,8 +35,8 @@ module Greentable
       @th_html[@current_col] = th
       th_opts = opts.delete(:th) || {}
       td_opts = opts.delete(:td) || {}
-      @th_attributes[@current_col] = deep_merge(th_opts, opts)
-      @td_attributes[@current_col] = deep_merge(td_opts, opts)
+      @th_attributes[@current_col] = deep_merge(opts, th_opts)
+      @td_attributes[@current_col] = deep_merge(opts, td_opts)
 
       @td_html[@row_counter.i] ||= []
       @td_html[@row_counter.i][@current_col] = @parent.capture(&block)
@@ -48,10 +48,10 @@ module Greentable
     def footer(opts = {}, &block)
       return unless @tfoot.empty?
       @tfoot << '<tfoot>'
-      td_opts = deep_merge(opts.delete(:td), {class: opts.delete(:class)})
-      td_opts = deep_merge(td_opts, @defaults_td)
-      opts = deep_merge(opts, {td: td_opts, tr: @defaults_tr})
-      TableGroup.new(@parent, [nil], opts).process(&block).send(:to_s_tbody_content, @tfoot)
+      tr_opts = deep_merge(@defaults_tr, opts.delete(:tr))
+      td_opts = deep_merge(opts, opts.delete(:td))
+      td_opts = deep_merge(@defaults_td, td_opts)
+      TableGroup.new(@parent, [nil], {td: td_opts, tr: tr_opts}).process(&block).send(:to_s_tbody_content, @tfoot)
       @tfoot << '</tfoot>'
     end
 
@@ -128,7 +128,7 @@ module Greentable
             deep_merge(source_hash[rkey], rval)
           elsif rval == source_hash[rkey] then
           elsif rval.is_a?(String) and lval.is_a?(String)
-            source_hash[rkey] = "#{rval} #{lval}"
+            source_hash[rkey] = "#{lval} #{rval}"
           else
             source_hash[rkey] = rval
           end

@@ -6,6 +6,11 @@ hello world
 |
 <a href="/?greentable_export=print&greentable_id=greentable_id">Print</a>
 <%= greentable([100, 101, 102], :id => 'greentable_id') do |gt, el| %>
+    <% gt.footer(style: 'border-top: 2px solid red;') do |footer| %>
+        <% footer.col(style: 'background-color: #ccc;') do %>
+            footer td
+        <% end %>
+    <% end %>
     <% gt.col('x') do %>
         <%= el %>
     <% end %>
