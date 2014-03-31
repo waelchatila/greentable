@@ -7,6 +7,8 @@ module Greentable
     def initialize(parent, records, opts)
       @parent = parent
       @records = records
+      @row_counter = Counter.new(@records.size)
+
       defaults = Greentable.configuration.defaults.dup rescue {}
       @defaults_tr = deep_merge(defaults.delete(:tr), opts.delete(:tr))
       @defaults_th = deep_merge(defaults.delete(:th), opts.delete(:th))
@@ -22,12 +24,11 @@ module Greentable
       @td_attributes = []
       @td_html = []
 
+      @tfoot = ""
     end
 
-    def subrow(opts = {}, &block)
-      return if capture_headers
-      return if opts[:display_on] == :first && !@row_counter.first?
-      return if opts[:display_on] == :last && !@row_counter.last?
+    def counter
+      @row_counter
     end
 
     def col(th = nil, opts = {}, &block)
@@ -44,15 +45,22 @@ module Greentable
       return nil
     end
 
-    def process(&block)
-      @row_counter = Counter.new(@records.size)
+    def footer(opts = {}, &block)
+      return unless @tfoot.empty?
+      @tfoot << '<tfoot>'
+      td_opts = deep_merge(opts.delete(:td), {class: opts.delete(:class)})
+      td_opts = deep_merge(td_opts, @defaults_td)
+      opts = deep_merge(opts, {td: td_opts, tr: @defaults_tr})
+      TableGroup.new(@parent, [nil], opts).process(&block).send(:to_s_tbody_content, @tfoot)
+      @tfoot << '</tfoot>'
+    end
 
+    def process(&block)
       @records.each do |record|
         @current_col = 0
         block.call(self, record)
         @row_counter.inc
       end
-
       self
     end
 
@@ -60,6 +68,24 @@ module Greentable
       ret = ""
       return ret if @td_html.empty?
       ret << "<table#{do_attributes(nil,@opts)}>"
+      to_s_thead_content(ret)
+      ret << "<tbody>"
+      to_s_tbody_content(ret)
+      ret << "</tbody>"
+      ret << @tfoot
+      ret << "</table>"
+      ret.html_safe
+    end
+
+    class TableGroup < Table
+      def col(th = nil, opts = {}, &block)
+        super(nil, th || {}, &block)
+      end
+    end
+
+    private
+
+    def to_s_thead_content(ret)
       unless @th_html.compact.empty?
         ret << "<thead>"
         ret << "<tr#{do_attributes(nil, @defaults_tr)}>"
@@ -69,22 +95,19 @@ module Greentable
         ret << "</tr>"
         ret << "</thead>"
       end
-      ret << "<tbody>"
+    end
 
+    def to_s_tbody_content(ret)
       @row_counter.i.times do |row|
         ret << "<tr#{do_attributes(row, deep_merge(@defaults_tr, @tr_attributes[row]))}>"
-        @td_html[row].each_with_index do |td,col|
+        @td_html[row].each_with_index do |td, col|
           ret << "<td#{do_attributes(row, deep_merge(@defaults_td, @td_attributes[col]))}>#{td}</td>"
         end
         ret << "</tr>"
       end
-      ret << "</tbody>"
-      ret << "</table>"
-      ret.html_safe
     end
 
-    private
-    def do_attributes(i,o)
+    def do_attributes(i, o)
       instance = i.nil? ? nil : @records[i]
       return "" if o.nil? || o.empty?
       ret = o.map{|k,v| "#{k.is_a?(Proc) ? instance.instance_eval(&k).to_s : k.to_s}=\"#{v.is_a?(Proc) ? instance.instance_eval(&v).to_s : v.to_s}\""}.join(" ").strip

@@ -6,4 +6,6 @@
     greentable_id
     greentable_export_filename
 * assets/greentable.css
-
+* add table caption support
+* add colgroup support
+* add col support

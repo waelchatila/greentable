@@ -122,10 +122,10 @@ will produce
 <table>
     <thead>
         <tr>
-          <th>Year</th>
-          <th>An even week</th>
-          <th>An odd week</th>
-          <th>An even week</th>
+            <th>Year</th>
+            <th>An even week</th>
+            <th>An odd week</th>
+            <th>An even week</th>
         </tr>
     </thead>
     <tbody>
@@ -148,6 +148,109 @@ will produce
 </table>
 ```
 
+## Counter Object
+Sometimes, you'll need to know what row you're currently on. For that purpose, greentable exposes a counter object:
+
+```haml
+=greentable([x,y,z]) do |gt, el|
+  -gt.col('i') do
+    =gt.counter.i
+  -gt.col('first?') do
+    =gt.counter.first?
+  -gt.col('last?') do
+    =gt.counter.last?
+  -gt.col('odd?') do
+    =gt.counter.odd?
+  -gt.col('even?') do
+    =gt.counter.even?
+```
+
+will produce
+
+```html
+<table>
+    <thead>
+        <tr>
+            <th>i</th>
+            <th>first?</th>
+            <th>last?</th>
+            <th>odd?</th>
+            <th>even?</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0</td>
+            <td>true</td>
+            <td>false</td>
+            <td>true</td>
+            <td>false</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>false</td>
+            <td>false</td>
+            <td>false</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>false</td>
+            <td>true</td>
+            <td>true</td>
+            <td>false</td>
+        </tr>
+    </tbody>
+</table>
+```
+
+
+## Greentable Footer
+
+Sometime, you'll need to display a total at the end:
+
+```haml
+=greentable(products) do |gt, product|
+  -gt.footer(class: 'a', style: 'border-top: 2px solid black') do |footer|
+    -footer.col do
+      Total
+    -footer.col(style: 'font-weight: bold') do
+      $3.14
+
+  -gt.col('name') do
+    =product
+  -gt.col('price') do
+    =product.price
+```
+
+will produce
+
+```html
+<table>
+    <thead>
+        <tr>
+            <th>name</th>
+            <th>price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ProductA</td>
+            <td>$2.11</td>
+        </tr>
+        <tr>
+            <td>ProductB</td>
+            <td>$1.03</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>Total</td>
+            <td>$3.14</td>
+        </tr>
+    </tfoot>
+</table>
+```
 
 ## Global Defaults
 You can configure global defaults for all your greentables.
