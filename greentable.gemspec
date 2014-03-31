@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.name          = "greentable"
   spec.version     = Greentable::VERSION
   spec.authors       = ["Wael Chatila"]
-  spec.description = "Greentable produces HTML tables from an array without you having to deal with any HTML elements."
-  spec.summary     = "Rails declarative html tables with export features"
+  spec.description = "Greentable automatically produces HTML tables from an array in a succinct way. It also provides an easy way to export and print a particular table"
+  spec.summary     = "Rails declarative html tables with export and print features"
   spec.homepage    = "https://github.com/waelchatila/greentable"
   spec.license = 'LGPLv3+'
 

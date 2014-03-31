@@ -94,14 +94,14 @@ will produce
 <table class="a aa" style="b:c">
     <thead>
         <tr class="d">
-            <th onclick="e();" class="h i ee">col0</th>
+            <th onclick="e();" class="ee h i">col0</th>
             <th onclick="e();" class="ee">col1</th>
         </tr>
     </thead>
     <tbody>
         <tr class="d">
-            <td data-target="f" class="h ff">0</td>
-            <td data-target="f" class="j ff">0</td>
+            <td data-target="f" class="ff h">0</td>
+            <td data-target="f" class="ff j">0</td>
         </tr>
     </tbody>
 </table>
