@@ -247,7 +247,7 @@ will produce
     </tbody>
     <tfoot>
         <tr class='footer_tr_class'>
-            <td class='a' style: 'border-top: 2px solid black;'>Total</td>
+            <td class='a' style='border-top: 2px solid black;'>Total</td>
             <td class='a' style='border-top: 2px solid black; font-weight: bold;'>$3.14</td>
         </tr>
     </tfoot>
