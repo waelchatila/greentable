@@ -13,7 +13,7 @@ module Greentable
     end
 
     def _call(env)
-      status, headers, response = @app.call(env) rescue nil
+      status, headers, response = @app.call(env)
       greentable_export = (env['QUERY_STRING'] || '').scan(/greentable_export=([csv|print]+)/i)[0][0] rescue nil
       if greentable_export
         request    = Rack::Request.new(env)

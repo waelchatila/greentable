@@ -87,4 +87,23 @@ class GreentableTest < ActiveSupport::TestCase
     end
     assert_equal '<table class="a aa" style="b:c"><thead><tr class="d"><th onclick="e();" class="h i ee">col0</th><th onclick="e();" class="ee">col1</th></tr></thead><tbody><tr class="d"><td data-target="f" class="h ff">0</td><td data-target="f" class="j ff">0</td></tr></tbody></table>', gt.to_s
   end
+
+  test "global configuration" do
+    Greentable.configure do |config|
+      config.defaults = {class: 'table_class', tr: {class: 'tr_class'}, th: {class: 'th_class'}, td: {class: 'td_class'}}
+    end
+    begin
+      gt = Greentable::Table.new(self,[0], {})
+      gt.process do |gt, x|
+        gt.col('col0') do
+          x
+        end
+      end
+      assert_equal "<table class=\"table_class\"><thead><tr class=\"tr_class\"><th class=\"th_class\">col0</th></tr></thead><tbody><tr class=\"tr_class\"><td class=\"td_class\">0</td></tr></tbody></table>", gt.to_s
+    ensure
+      Greentable.configure do |config|
+        config.defaults = {}
+      end
+    end
+  end
 end
