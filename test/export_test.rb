@@ -41,6 +41,19 @@ class ExportTest < ActionController::TestCase
     assert body !~ /table id=.+greentable_id.+/, body
     assert body !~ /window.print/, body
     assert content_type =~ /text\/csv/
+
+    expected =<<-END
+x,x+1,i,first?,last?,odd?,even?
+100,101,0,true,false,true,false
+101,102,1,false,false,false,true
+102,103,2,false,true,true,false
+footer td,colspan=2,,"I
+                    contain
+                a
+                sub
+                    table"
+    END
+    assert_equal expected, body
   end
 
 end

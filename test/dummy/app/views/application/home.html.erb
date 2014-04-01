@@ -10,6 +10,24 @@ hello world
         <% footer.col(style: 'background-color: #ccc;') do %>
             footer td
         <% end %>
+        <% footer.col(colspan: 2) do %>
+            colspan=2
+        <% end %>
+        <% footer.col(style: 'background-color: #ccc;') do %>
+            <table>
+                <tr>
+                    <td>I</td>
+                    <td>contain</td>
+                </tr>
+                <tr>
+                    <td colspan="2">a</td>
+                </tr>
+                <tr>
+                    <td>sub</td>
+                    <td>table</td>
+                </tr>
+            </table>
+        <% end %>
     <% end %>
     <% gt.col('x') do %>
         <%= el %>

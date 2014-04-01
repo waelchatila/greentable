@@ -23,12 +23,15 @@ module Greentable
           doc = Nokogiri(body.to_s)
           if greentable_export == 'csv'
             ret= ""
-            (doc/"##{greentable_id}//tr").each do |tr|
+            (doc/"##{greentable_id} / * / tr").each do |tr|
               row = []
               col = 0
               (tr/"./th | ./td").each do |x|
-                colspan = (x.attributes['colspan'] || 1).to_i
-                colspan = [colspan,1].max
+                colspan = x.attributes['colspan']
+                if colspan
+                  colspan = colspan.value.to_i rescue nil
+                end
+                colspan ||= 1
                 row[col] = (x.inner_text || '').strip
                 col += colspan
               end
