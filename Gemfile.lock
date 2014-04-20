@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    greentable (0.9.3)
+    greentable (0.9.4)
 
 GEM
   remote: https://rubygems.org/
