@@ -146,6 +146,24 @@ class GreentableTableTest < ActiveSupport::TestCase
     assert_equal "<table><thead><tr><th>col0</th></tr></thead><tbody><tr><td>0</td></tr></tbody><tfoot><tr class=\"tr_class\"><td style=\"a b\">peace</td><td style=\"a c\">out</td></tr></tfoot></table>", gt.to_s
   end
 
+  test "footer - with empty table" do
+    gt = Greentable::Table.new(self, [], {})
+    gt.process do |gt, x|
+      gt.footer do |footer|
+        footer.col do
+          'peace'
+        end
+        footer.col do
+          'out'
+        end
+      end
+      gt.col('col0') do
+        x
+      end
+    end
+    assert_equal "", gt.to_s
+  end
+
   test "row_counter" do
     gt = Greentable::Table.new(self, [0, 1, 2], {})
     gt.process do |gt, x|
