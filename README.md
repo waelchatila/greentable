@@ -209,7 +209,7 @@ will produce
 
 ## Greentable Footer
 
-Sometime, you'll need to display a total (or whathaveyou) at the end:
+Sometimes, you'll need to display a total (or whathaveyou) at the end:
 
 ```haml
 =greentable(products) do |gt, product|
@@ -249,6 +249,63 @@ will produce
         <tr class='footer_tr_class'>
             <td class='a' style='border-top: 2px solid black;'>Total</td>
             <td class='a' style='border-top: 2px solid black; font-weight: bold;'>$3.14</td>
+        </tr>
+    </tfoot>
+</table>
+```
+
+Subtotal, shipping, tax, total? No problem:
+
+```haml
+=greentable(order.order_line_items) do |gt, order_line_item|
+  -gt.footer([:subtotal, :shipping, :tax, :total], class: 'klass') do |footer, attr|
+    -footer.col do
+      =attr
+    -footer.col do
+      =order.send(attr)
+
+  -gt.col('name') do
+    =order_line_item.name
+  -gt.col('price') do
+    =order_line_item.price
+```
+
+will produce
+
+```html
+<table>
+    <thead>
+        <tr>
+            <th>name</th>
+            <th>price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ProductA</td>
+            <td>$2.11</td>
+        </tr>
+        <tr>
+            <td>ProductB</td>
+            <td>$1.03</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class='klass'>subtotal</td>
+            <td class='klass'>xyz</td>
+        </tr>
+        <tr>
+            <td class='klass'>shipping</td>
+            <td class='klass'>xyz</td>
+        </tr>
+        <tr>
+            <td class='klass'>tax</td>
+            <td class='klass'>xyz</td>
+        </tr>
+        <tr>
+            <td class='klass'>total</td>
+            <td class='klass'>xyz</td>
         </tr>
     </tfoot>
 </table>

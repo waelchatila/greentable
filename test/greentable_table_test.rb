@@ -164,6 +164,24 @@ class GreentableTableTest < ActiveSupport::TestCase
     assert_equal "", gt.to_s
   end
 
+  test "footer - with multiple rows" do
+    gt = Greentable::Table.new(self, [0], {})
+    gt.process do |gt, x|
+      gt.footer(['f1', 'f2'], :class => 'klass') do |footer, row|
+        footer.col do
+          'Total'
+        end
+        footer.col do
+          row
+        end
+      end
+      gt.col('col0') do
+        x
+      end
+    end
+    assert_equal "<table><thead><tr><th>col0</th></tr></thead><tbody><tr><td>0</td></tr></tbody><tfoot><tr><td class=\"klass\">Total</td><td class=\"klass\">f1</td></tr><tr><td class=\"klass\">Total</td><td class=\"klass\">f2</td></tr></tfoot></table>", gt.to_s
+  end
+
   test "row_counter" do
     gt = Greentable::Table.new(self, [0, 1, 2], {})
     gt.process do |gt, x|

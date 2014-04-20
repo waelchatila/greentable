@@ -45,13 +45,23 @@ module Greentable
       return nil
     end
 
-    def footer(opts = {}, &block)
+    def footer(*args, &block)
       return unless @tfoot.empty?
+      if args.size == 1
+        rows = [nil]
+        opts = args[0]
+      elsif args.size == 2
+        rows = args[0]
+        opts = args[1]
+      else
+        raise 'greentable footer: number of arguments must be either 1 or two'
+      end
+
       @tfoot << '<tfoot>'
       tr_opts = deep_merge(@defaults_tr, opts.delete(:tr))
       td_opts = deep_merge(opts, opts.delete(:td))
       td_opts = deep_merge(@defaults_td, td_opts)
-      TableGroup.new(@parent, [nil], {td: td_opts, tr: tr_opts}).process(&block).send(:to_s_tbody_content, @tfoot)
+      TableGroup.new(@parent, rows, {td: td_opts, tr: tr_opts}).process(&block).send(:to_s_tbody_content, @tfoot)
       @tfoot << '</tfoot>'
     end
 
