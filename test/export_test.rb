@@ -53,7 +53,7 @@ footer td,colspan=2,,"I
                 sub
                     table"
     END
-    assert_equal expected, body
+    assert_equal expected.gsub(/\s+/m,''), body.gsub(/\s+/m,'')
   end
 
 end

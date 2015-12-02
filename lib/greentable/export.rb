@@ -19,7 +19,8 @@ module Greentable
         greentable_id = request.params['greentable_id']
         if greentable_id
           body = response.respond_to?(:body) ? response.body : response.join
-          autoload(:Nokogiri, 'nokogiri')
+
+          require 'nokogiri'
           doc = Nokogiri(body.to_s)
           if greentable_export == 'csv'
             ret= ""
