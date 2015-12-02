@@ -11,6 +11,8 @@ Greentable is an declarative approach to HTML tables and adds additional export 
 gem 'greentable'
 ```
 
+Greentable works for Rails 3.x and Rails 4.x
+
 ## Usage
 To produce a table from an array of elements, do the following in a view:
 

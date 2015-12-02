@@ -118,9 +118,9 @@ module Greentable
     end
 
     def do_attributes(i, o)
-      instance = i.nil? ? nil : @records[i]
+      row = i.nil? ? nil : @records[i]
       return "" if o.nil? || o.empty?
-      ret = o.map{|k,v| "#{k.is_a?(Proc) ? instance.instance_eval(&k).to_s : k.to_s}=\"#{v.is_a?(Proc) ? instance.instance_eval(&v).to_s : v.to_s}\""}.join(" ").strip
+      ret = o.map{|k,v| "#{k.is_a?(Proc) ? row.instance_eval(&k).to_s : k.to_s}=\"#{v.is_a?(Proc) ? row.instance_eval(&v).to_s : v.to_s}\""}.join(" ").strip
       ret = " " + ret unless ret.empty?
       return ret
     end
