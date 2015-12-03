@@ -371,6 +371,8 @@ Add a couple of http query parameters in your view and your done:
 <% end %>
 ```
 
+Green Export and Green Printing requires *Nokogiri* to be installed. Add 'nokogiri' as a gem dependency to your project if you want to use greentable's export or printing feature
+
 ### Available Query Parameters
 
 * **greentable_id**=*any string* [REQUIRED]. A unique html tag id to tell the rack middleware which greentable to extract.
