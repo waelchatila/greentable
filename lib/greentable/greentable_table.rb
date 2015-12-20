@@ -119,6 +119,13 @@ module Greentable
 
     def do_attributes(i, o)
       row = i.nil? ? nil : @records[i]
+      o = if o.is_a?(Proc) && row
+            row.instance_eval(&o)
+          elsif o.is_a?(Proc) && row.nil?
+            nil
+          else
+            o
+          end
       return "" if o.nil? || o.empty?
       ret = o.map{|k,v| "#{k.is_a?(Proc) ? row.instance_eval(&k).to_s : k.to_s}=\"#{v.is_a?(Proc) ? row.instance_eval(&v).to_s : v.to_s}\""}.join(" ").strip
       ret = " " + ret unless ret.empty?
@@ -131,6 +138,7 @@ module Greentable
 
     def deep_merge!(source_hash, specialized_hash)
       #this code is originally from the gem hash-deep-merge, but has been modified slightly
+      return specialized_hash unless specialized_hash.is_a?(Hash)
       specialized_hash.each_pair do |rkey, rval|
         if source_hash.has_key?(rkey) then
           lval = source_hash[rkey]

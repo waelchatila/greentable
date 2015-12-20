@@ -214,4 +214,15 @@ class GreentableTableTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test "tr proc" do
+    gt = Greentable::Table.new(self, [0], {tr: Proc.new{{foo: 'bar'}}})
+    gt.process do |gt, x|
+      gt.col('col') do
+        x
+      end
+    end
+    assert_equal "<table><thead><tr><th>col</th></tr></thead><tbody><tr foo=\"bar\"><td>0</td></tr></tbody></table>", gt.to_s
+
+  end
 end
